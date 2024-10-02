@@ -3,7 +3,7 @@
 - Đào Thị Bình An
 - Vũ Việt Hùng 
 - Bùi Thị Huyền Tâm
-## Hướng dẫn cài đặt
+## Guide
 ```sh
 # Cài đặt các gói liên quan
 $ npm install
@@ -13,7 +13,7 @@ $ mkdir db
 $ npm start
 ```
 
-## Mô Tả
+## Description
 | Endpoint | Phương thức | Mục tiêu
 |--|:--:|--|
 | /short/:id | GET | Trả về đường dẫn gốc
