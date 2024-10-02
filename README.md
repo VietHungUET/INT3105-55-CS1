@@ -1,5 +1,8 @@
 # INT3105-55-CS1
-
+## Contributors
+- Đào Thị Bình An
+- Vũ Việt Hùng 
+- Bùi Thị Huyền Tâm
 ## Hướng dẫn cài đặt
 ```sh
 # Cài đặt các gói liên quan
