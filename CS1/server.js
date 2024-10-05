@@ -12,7 +12,7 @@ app.get('/short/:id', async (req, res) => {
             res.send("<h1>404</h1>");
         }
         else {
-            res.send(url);
+            res.redirect(url);
         }
     } catch (err) {
         res.send(err)
@@ -29,7 +29,13 @@ app.post('/create', async (req, res) => {
         res.send(err)
     }
 });
+const path = require('path');
 
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
+});
 app.listen(port, () => {
     console.log(`Example app listening at http://localhost:${port}`);
 })
