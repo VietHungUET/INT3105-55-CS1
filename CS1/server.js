@@ -2,7 +2,7 @@ const express = require('express')
 const lib = require('./utils')
 const app = express()
 const port = 3001
-
+const path = require('path');
 
 app.get('/short/:id', async (req, res) => {
     try {
@@ -29,8 +29,6 @@ app.post('/create', async (req, res) => {
         res.send(err)
     }
 });
-const path = require('path');
-
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {

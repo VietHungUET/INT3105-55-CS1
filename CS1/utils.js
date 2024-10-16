@@ -8,6 +8,14 @@ db.run(`
         ) STRICT
 `);
 
+function isValidURL(url) {
+    try {
+        new URL(url);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
 function makeID(length) {
     let result = '';
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -47,6 +55,9 @@ function create(id, url) {
 }
 
 async function shortUrl(url) {
+    if (!isValidURL(url)) {
+        throw new Error('Invalid URL');
+    }
     while (true) {
         let newID = makeID(5);
         let originUrl = await findOrigin(newID);
