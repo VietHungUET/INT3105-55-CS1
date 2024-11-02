@@ -1,5 +1,35 @@
 const sqlite3 = require('sqlite3').verbose();
 const db = new sqlite3.Database('./db/app.db');
+const { Url } = require('./models/url');
+const crypto = require('crypto');
+
+// Hàm để tạo URL rút gọn, kiểm tra xem URL đã tồn tại chưa
+async function shortUrl(originalUrl) {
+    // Kiểm tra xem URL đã tồn tại chưa
+    const existingUrl = await Url.findOne({ where: { originalUrl } });
+
+    if (existingUrl) {
+        // Nếu tồn tại rồi, trả về shortId cũ
+        return existingUrl.shortId;
+    } else {
+        // Nếu chưa tồn tại, tạo một shortId mới
+        const shortId = crypto.randomBytes(3).toString('hex');  // Tạo ID 6 ký tự
+        const newUrl = await Url.create({ originalUrl, shortId });
+        return newUrl.shortId;
+    }
+}
+
+// Hàm để tìm URL gốc dựa vào shortId
+async function findOrigin(shortId) {
+    const urlRecord = await Url.findOne({ where: { shortId } });
+    return urlRecord ? urlRecord.originalUrl : null;
+}
+
+module.exports = {
+    shortUrl,
+    findOrigin
+};
+
 
 db.run(`
         CREATE TABLE IF NOT EXISTS data(
