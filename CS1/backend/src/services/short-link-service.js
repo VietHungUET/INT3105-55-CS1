@@ -32,9 +32,9 @@ db.serialize(() => {
 });
 
 class ShortLinkService {
-    constructor() {
-        this.repository = new ServiceRepository();
-    }
+    // constructor() {
+    //     this.repository = new ServiceRepository();
+    // }
     isValidURL(url) {
         try {
             new URL(url);

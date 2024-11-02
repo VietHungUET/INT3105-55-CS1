@@ -7,10 +7,7 @@
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "react": "^18.3.1",
-<<<<<<< HEAD
     "react-copy-to-clipboard": "^5.1.0",
-=======
->>>>>>> cbe0b751e8dae20c3fbc2068b45a7c63aebc5f72
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.27.0",
     "react-scripts": "5.0.1",
