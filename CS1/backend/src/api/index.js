@@ -1,3 +1,4 @@
 module.exports = {
-    shortlink: require('./short-link-service')
+    shortlink: require('./shortink'),
+    user: require('./user')
 }

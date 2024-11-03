@@ -1,42 +1,58 @@
 // src/pages/Home.js
 import React, { useState } from 'react';
-import './Home.css'; 
+import axios from 'axios';
+import './Home.css';
 import Result from '../../components/Result/Result';
 
 function Home() {
-  const [value, setValue] = useState('');
 
-  const handleClick = () => {
-    console.log('Shortening URL:', value);
+  const [url, setUrl] = useState('');
+  const [shortUrl, setShortUrl] = useState('');
+  const [error, setError] = useState('');
+
+  const handleClick = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('http://localhost:3001/create', { url });
+      const data = response.data;
+      setShortUrl(data.shortUrl);
+      setError('');
+    } catch (err) {
+      if (err.response) {
+        setError(err.response.data.error);
+      } else {
+        setError('An error occurred while creating the short URL.');
+      }
+      setShortUrl('');
+    }
   };
-
   return (
     <div className="subheader">
       {/* Content before waves */}
       <div className="inner-header flex">
-        
-        
-          {/* Main Content */}
-      <div className="inputContainer">
-        <h1>URL <span>Shortener</span></h1>
-        <h2> Simplify your links, track and manage them </h2>
-        <div>
-          <input
-            type="text"
-            placeholder="Enter a long link here"
-            value={value}
-            onChange={e => setValue(e.target.value)}  
-          />
-          <button onClick={handleClick}>Shorten</button>
+
+
+        {/* Main Content */}
+        <div className="inputContainer">
+          <h1>URL <span>Shortener</span></h1>
+          <h2> Simplify your links, track and manage them </h2>
+          <div>
+            <input
+              type="text"
+              placeholder="Enter a long link here"
+              value={url}
+              onChange={e => setUrl(e.target.value)}
+            />
+            <button onClick={handleClick}>Shorten</button>
+          </div>
+
+          <Result shortUrl={shortUrl} />
         </div>
 
-        <Result inputValue={value} />
+
       </div>
 
-      
-      </div>
-      
-    
+
       {/* Waves Container */}
       <div className="waves-container">
         <svg
@@ -62,7 +78,7 @@ function Home() {
         </svg>
       </div>
 
-    
+
     </div>
   );
 }
