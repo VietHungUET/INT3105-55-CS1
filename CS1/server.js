@@ -1,8 +1,16 @@
 const express = require('express')
 const lib = require('./utils')
+const { sequelize } = require('./models/url');
+const crypto = require('crypto');
 const app = express()
 const port = 3001
-const path = require('path');
+
+sequelize.sync().then(() => {
+    console.log('Database synced');
+}).catch(err => {
+    console.error('Unable to sync the database:', err);
+});
+
 
 app.get('/short/:id', async (req, res) => {
     try {
@@ -21,7 +29,7 @@ app.get('/short/:id', async (req, res) => {
 
 app.post('/create', async (req, res) => {
     try {
-        const url = req.query.url;
+        const url = req.body.url;
         const newID = await lib.shortUrl(url);
         res.send(newID);
 
@@ -29,11 +37,16 @@ app.post('/create', async (req, res) => {
         res.send(err)
     }
 });
+const path = require('path');
+
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.json()); // Để xử lý body dạng JSON
+app.use(express.urlencoded({ extended: true })); // Để xử lý body dạng URL-encoded
+
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 app.listen(port, () => {
-    console.log(`Example app listening at http://localhost:${port}`);
+    console.log(`Example app http://localhost:${port}`);
 })
