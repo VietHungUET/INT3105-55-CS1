@@ -5,12 +5,14 @@
     gap: 10px; 
   }
   
-  .result p {
-    font-family: Arial, sans-serif;;
-    margin: 0;
-    font-size: 16px;
-    font-weight: 500;
-    color: #f8f6f6; 
+  .result a {
+    color: white;
+    text-decoration: none; 
+  }
+  
+  .result a:hover {
+    color: #d1d0d0; 
+    text-decoration: underline;
   }
   
   .result button {
@@ -27,7 +29,8 @@
   }
   
   .result button:hover {
-    background-color: rgba(255, 152, 0, 0.1); 
+    background-color: transparent;
+    color: #ff9800; 
   }
   
   .result button.copied {

@@ -9,11 +9,13 @@ const Result = ({ shortUrl }) => {
     setCopied(false); // Reset copied state when shortUrl changes
   }, [shortUrl]);
 
-  return (
+  return ( 
     <>
       {shortUrl && (
-        <div className="result">
-          <p>{shortUrl}</p>
+        <div className="result"> 
+          <a href={shortUrl} target="_blank" rel="noopener noreferrer"> 
+            {shortUrl}
+          </a>
           <CopyToClipboard
             text={shortUrl}
             onCopy={() => setCopied(true)}
