@@ -11,7 +11,6 @@ const Auth = () => {
   const [isSignUpMode, setIsSignUpMode] = useState(false);
 
   useEffect(() => {
-    
     if (location.state && location.state.isSignUpMode !== undefined) {
       setIsSignUpMode(location.state.isSignUpMode);
     }
