@@ -2,6 +2,7 @@ const express = require('express');
 const { PORT } = require('./config');
 // const { databaseConnection } = require('./database');
 const expressApp = require('./express-app');
+const { exec } = require('child_process');
 
 const StartServer = async () => {
 
@@ -16,7 +17,7 @@ const StartServer = async () => {
         .on('error', (err) => {
             console.log(err);
             process.exit();
-        })
-}
+        });
 
+};
 StartServer();
