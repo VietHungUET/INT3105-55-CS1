@@ -1,3 +1,4 @@
+require('dotenv').config();  
 const dotEnv = require("dotenv");
 
 if (process.env.NODE_ENV !== "prod") {
