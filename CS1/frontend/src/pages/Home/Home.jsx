@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import './Home.css';
@@ -13,9 +12,10 @@ function Home() {
   const handleClick = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3001/create', { url });
+      const response = await axios.post('http://localhost:8000/api/create', { url });
       const data = response.data;
-      setShortUrl(data.shortUrl);
+      const updatedShortUrl = data.shortUrl.replace("8000", "3001");
+      setShortUrl(updatedShortUrl);
       setError('');
     } catch (err) {
       if (err.response) {

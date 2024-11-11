@@ -29,10 +29,4 @@ module.exports = (app) => {
             res.status(500).json({ error: err.message });
         }
     });
-
-    // app.use(express.static(path.join(__dirname, '../public')));
-
-    // app.get('/', (req, res) => {
-    //     res.sendFile(path.join(__dirname, 'public', 'index.html'));
-    // });
 };
