@@ -6,11 +6,11 @@ module.exports = (app) => {
     const service = new UserService();
 
     // Register endpoint
-    app.post('/auth/register', async (req, res, next) => {
+    app.post('/register', async (req, res, next) => {
         try {
-            const { fullName, phone, password, confirmPassword } = req.body;
+            const { username, phone, password, confirmPassword } = req.body;
             const result = await service.register({
-                fullName,
+                username,
                 phone,
                 password,
                 confirmPassword
@@ -22,10 +22,10 @@ module.exports = (app) => {
     });
 
     // Login endpoint
-    app.post('/auth/login', async (req, res, next) => {
+    app.post('/login', async (req, res, next) => {
         try {
-            const { phone, password } = req.body;
-            const result = await service.login({ phone, password });
+            const { username, password } = req.body;
+            const result = await service.login({ username, password });
             res.json(result);
         } catch (err) {
             next(err);
@@ -33,12 +33,12 @@ module.exports = (app) => {
     });
 
     // Test protected route
-    app.get('/auth/profile', authMiddleware, (req, res) => {
-        res.json({
-            status: 'success',
-            data: {
-                user: req.user
-            }
-        });
-    });
+    // app.get('/auth/profile', authMiddleware, (req, res) => {
+    //     res.json({
+    //         status: 'success',
+    //         data: {
+    //             user: req.user
+    //         }
+    //     });
+    // });
 };

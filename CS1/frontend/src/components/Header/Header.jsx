@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
@@ -7,13 +7,25 @@ import './HeaderStyle.css';
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const username = "User";
+  const [username, setUsername] = useState('');
   const navigate = useNavigate();
   const location = useLocation(); // Lấy đường dẫn hiện tại
+
+  useEffect(() => {
+    // Kiểm tra trạng thái đăng nhập từ localStorage
+    const token = localStorage.getItem('token');
+    const storedUsername = localStorage.getItem('username');
+    if (token && storedUsername) {
+      setIsLoggedIn(true);
+      setUsername(storedUsername);
+    }
+  }, []);
 
   // Function to handle logout
   const handleLogout = () => {
     setIsLoggedIn(false);
+    localStorage.removeItem('token');
+    localStorage.removeItem('username');
   };
 
   const handleSignInClick = () => {

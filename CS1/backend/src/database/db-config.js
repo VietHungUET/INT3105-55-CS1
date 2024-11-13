@@ -1,7 +1,7 @@
 module.exports = {
-    HOST: 'localhost',
-    USER: 'root',
-    PASSWORD: '@Tam11071998',
-    DATABASE: 'linkdb',
-    DIALECT: 'mysql',
-  };
+  HOST: 'localhost',
+  USER: 'root',
+  PASSWORD: 'Hung8102004@moc',
+  DATABASE: 'linkdb',
+  DIALECT: 'mysql',
+};

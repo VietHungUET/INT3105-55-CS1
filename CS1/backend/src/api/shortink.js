@@ -1,6 +1,9 @@
 const express = require('express');
 const ShortLinkService = require('../services/short-link-service');
-const path = require('path');
+const { BadRequestError } = require('../utils/app-errors');
+
+const authMiddleware = require('./middlewares/auth');
+const addUserInfoMiddleware = require('./middlewares/userInfo');
 
 module.exports = (app) => {
     const lib = new ShortLinkService();
@@ -20,11 +23,22 @@ module.exports = (app) => {
         }
     });
 
-    app.post('/create', async (req, res) => {
+    app.post('/create', addUserInfoMiddleware, async (req, res) => {
         try {
             const { url } = req.body;
-            const { shortUrl } = await lib.createShortUrl(url);
+            const userId = req.user && req.user.userId ? req.user.userId : null;
+            const { shortUrl } = await lib.createShortUrl(url, userId);
             res.json({ shortUrl: `${req.protocol}://${req.get('host')}/short/${shortUrl}` });
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    });
+
+    app.get('/my-urls', authMiddleware, async (req, res) => {
+        try {
+            const userId = req.user.userId; // Lấy userId từ req.user (được gán bởi middleware xác thực)
+            const urls = await lib.getUserUrls(userId);
+            res.json(urls);
         } catch (err) {
             res.status(500).json({ error: err.message });
         }

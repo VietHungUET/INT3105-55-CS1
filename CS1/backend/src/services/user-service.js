@@ -1,14 +1,15 @@
+const { models: { User } } = require('../database/models');
 const bcrypt = require('bcrypt');
-const { createUser, findUserByPhone, GenerateToken } = require('../utils');
+const { GenerateToken } = require('../utils');
 const { APIError, BadRequestError } = require('../utils/app-errors');
 
 class UserService {
     async register(userInput) {
-        const { fullName, phone, password, confirmPassword } = userInput;
+        const { username, phone, password, confirmPassword } = userInput;
 
         try {
             // Validate input
-            if (!fullName || !phone || !password || !confirmPassword) {
+            if (!username || !phone || !password || !confirmPassword) {
                 throw new BadRequestError('All fields are required');
             }
 
@@ -23,9 +24,9 @@ class UserService {
             }
 
             // Check existing user
-            const existingUser = await findUserByPhone(phone);
+            const existingUser = await User.findOne({ where: { username } })
             if (existingUser) {
-                throw new BadRequestError('Phone number already registered');
+                throw new BadRequestError('Username already registered');
             }
 
             // Hash password
@@ -33,18 +34,14 @@ class UserService {
             const hashedPassword = await bcrypt.hash(password, salt);
 
             // Create user
-            const userId = await createUser(fullName, phone, hashedPassword);
-
-            // Generate token
-            const token = await GenerateToken({ userId, phone });
+            const newUser = await User.create({ username, phone, password: hashedPassword });
 
             return {
                 status: 'success',
                 data: {
-                    token,
                     user: {
-                        id: userId,
-                        fullName,
+                        id: newUser.id,
+                        username,
                         phone
                     }
                 }
@@ -55,16 +52,16 @@ class UserService {
     }
 
     async login(userInput) {
-        const { phone, password } = userInput;
+        const { username, password } = userInput;
 
         try {
             // Validate input
-            if (!phone || !password) {
-                throw new BadRequestError('Phone and password are required');
+            if (!username || !password) {
+                throw new BadRequestError('Username and password are required');
             }
 
             // Find user
-            const user = await findUserByPhone(phone);
+            const user = await User.findOne({ where: { username } });
             if (!user) {
                 throw new BadRequestError('Invalid credentials');
             }
@@ -76,7 +73,7 @@ class UserService {
             }
 
             // Generate token
-            const token = await GenerateToken({ userId: user.id, phone: user.phone });
+            const token = await GenerateToken({ userId: user.id, username: user.username });
 
             return {
                 status: 'success',
@@ -84,8 +81,7 @@ class UserService {
                     token,
                     user: {
                         id: user.id,
-                        fullName: user.fullName,
-                        phone: user.phone
+                        username: user.username
                     }
                 }
             };

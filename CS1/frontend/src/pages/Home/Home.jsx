@@ -9,13 +9,35 @@ function Home() {
   const [shortUrl, setShortUrl] = useState('');
   const [error, setError] = useState('');
 
+  const isValidURL = (string) => {
+    try {
+      new URL(string);
+      return true;
+    } catch (_) {
+      return false;
+    }
+  };
+
+
   const handleClick = async (e) => {
     e.preventDefault();
+    if (!isValidURL(url)) {
+      setError('Invalid URL');
+      setShortUrl('');
+      return;
+    }
     try {
-      const response = await axios.post('http://localhost:8000/api/create', { url });
+      const token = localStorage.getItem('token');
+      const response = await axios.post('http://localhost:8000/create',
+        { url },
+        {
+          headers: {
+            'Authorization': `Bearer ${token}` // Gửi token trong header Authorization
+          }
+        }
+      );
       const data = response.data;
-      const updatedShortUrl = data.shortUrl.replace("8000", "3001");
-      setShortUrl(updatedShortUrl);
+      setShortUrl(data.shortUrl);
       setError('');
     } catch (err) {
       if (err.response) {
@@ -47,6 +69,7 @@ function Home() {
           </div>
 
           <Result shortUrl={shortUrl} />
+          {error && <p className="error">{error}</p>}
         </div>
 
 

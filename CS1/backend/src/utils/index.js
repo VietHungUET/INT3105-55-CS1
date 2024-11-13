@@ -17,13 +17,6 @@ const max_value = Math.pow(62, 6) - 1;
 
 db.serialize(() => {
     db.run(`
-        CREATE TABLE IF NOT EXISTS data(
-            id TEXT,
-            url TEXT
-        ) STRICT
-    `);
-
-    db.run(`
         CREATE TABLE IF NOT EXISTS counter(
             count INTEGER
         )
@@ -41,14 +34,6 @@ db.serialize(() => {
             });
         }
     });
-    db.run(`
-        CREATE TABLE IF NOT EXISTS users(
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            fullName TEXT NOT NULL,
-            phone TEXT UNIQUE NOT NULL,
-            password TEXT NOT NULL
-        ) STRICT
-    `);
 });
 
 
@@ -79,31 +64,7 @@ function makeID(deci) {
     return hash_str;
 }
 
-function findOrigin(id) {
-    return new Promise((resolve, reject) => {
-        return db.get(`SELECT * FROM data WHERE id = ?`, [id], function (err, res) {
-            if (err) {
-                return reject(err.message);
-            }
-            if (res != undefined) {
-                return resolve(res.url);
-            } else {
-                return resolve(null);
-            }
-        });
-    });
-}
 
-function create(id, url) {
-    return new Promise((resolve, reject) => {
-        return db.run(`INSERT INTO data VALUES (?, ?)`, [id, url], function (err) {
-            if (err) {
-                return reject(err.message);
-            }
-            return resolve(id);
-        });
-    });
-}
 
 function getCounter() {
     return new Promise((resolve, reject) => {
@@ -134,36 +95,14 @@ async function shortUrl(url) {
     }
     let deci = await getCounter();
     let newID = makeID(deci);
-    await create(newID, url)
+    // await create(newID, url)
     incrementCounter(deci);
     return newID;
 
 }
-async function createUser(fullName, phone, password) {
-    return new Promise((resolve, reject) => {
-        db.run(
-            'INSERT INTO users (fullName, phone, password) VALUES (?, ?, ?)',
-            [fullName, phone, password],
-            function (err) {
-                if (err) {
-                    return reject(err);
-                }
-                resolve(this.lastID);
-            }
-        );
-    });
-}
 
-async function findUserByPhone(phone) {
-    return new Promise((resolve, reject) => {
-        db.get('SELECT * FROM users WHERE phone = ?', [phone], (err, row) => {
-            if (err) {
-                return reject(err);
-            }
-            resolve(row);
-        });
-    });
-}
+
+
 async function GenerateToken(payload) {
     try {
         return jwt.sign(payload, JWT_SECRET, { expiresIn: '24h' });
@@ -192,7 +131,6 @@ async function ValidateSignature(req) {
 
         const decoded = await ValidateToken(token);
         if (!decoded) return false;
-
         req.user = decoded;
         return true;
     } catch (error) {
@@ -200,10 +138,7 @@ async function ValidateSignature(req) {
     }
 }
 module.exports = {
-    findOrigin,
     shortUrl,
-    createUser,
-    findUserByPhone,
     GenerateToken,
     ValidateToken,
     ValidateSignature
