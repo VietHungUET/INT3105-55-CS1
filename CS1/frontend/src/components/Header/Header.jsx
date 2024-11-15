@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink, useNavigate, useLocation } from 'react-router-dom'; // Import useLocation
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faLink, faUserCircle } from '@fortawesome/free-solid-svg-icons'; // Import biểu tượng avatar
 import logo from '../../assets/logo.png';
 import './HeaderStyle.css';
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [username, setUsername] = useState('');
+  const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation(); // Lấy đường dẫn hiện tại
+  const location = useLocation();
 
   useEffect(() => {
     // Kiểm tra trạng thái đăng nhập từ localStorage
@@ -26,6 +27,7 @@ function Header() {
     setIsLoggedIn(false);
     localStorage.removeItem('token');
     localStorage.removeItem('username');
+    navigate('/');
   };
 
   const handleSignInClick = () => {
@@ -36,6 +38,27 @@ function Header() {
     navigate('/auth', { state: { isSignUpMode: true } });
   };
 
+  const toggleMenu = () => {
+    setShowMenu(!showMenu);
+  };
+
+  // Close the menu when clicking outside of it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      const avatar = document.querySelector('.user-avatar');
+      const dropdownMenu = document.querySelector('.dropdown-menu');
+
+      if (avatar && !avatar.contains(event.target) && dropdownMenu && !dropdownMenu.contains(event.target)) {
+        setShowMenu(false);
+      }
+    };
+
+    document.addEventListener('click', handleClickOutside);
+    return () => {
+      document.removeEventListener('click', handleClickOutside);
+    };
+  }, []);
+
   return (
     <header className="header">
       <div className="logo">
@@ -43,7 +66,6 @@ function Header() {
       </div>
 
       <nav className="nav-links">
-        {/* Thêm nút Home */}
         <div className="home-button">
           <NavLink to="/" className="home-link">
             <FontAwesomeIcon icon={faHome} />
@@ -51,15 +73,26 @@ function Header() {
           </NavLink>
         </div>
 
-        {/* Kiểm tra nếu không phải trang /auth */}
         {location.pathname !== '/auth' && (
           isLoggedIn ? (
             <>
-              <NavLink to="/history" activeClassName="active">History</NavLink>
-              <div className="user-info">
-                <span>{username}</span>
-                <button onClick={handleLogout} className="logout-button">Logout</button>
+              <div className="his-button">
+                <NavLink to="/history" className="history-link">
+                  <FontAwesomeIcon icon={faLink} />
+                  <span className="history-text">History</span>
+                </NavLink>
               </div>
+
+              <div className="user-avatar" onClick={toggleMenu}>
+                <FontAwesomeIcon icon={faUserCircle} className="avatar-icon" />
+              </div>
+
+              {showMenu && (
+                <div className="dropdown-menu">
+                  <p className="username">{username}</p>
+                  <button onClick={handleLogout} className="logout-button">Logout</button>
+                </div>
+              )}
             </>
           ) : (
             <div className="auth-buttons">

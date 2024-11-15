@@ -1,4 +1,4 @@
-require('dotenv').config();  
+require('dotenv').config();
 const dotEnv = require("dotenv");
 
 if (process.env.NODE_ENV !== "prod") {
@@ -11,6 +11,5 @@ console.log("Loaded PORT:", process.env.PORT);
 
 module.exports = {
     PORT: process.env.PORT || 3001,
-    DB_URL: process.env.MONGODB_URI,
     APP_SECRET: process.env.APP_SECRET,
 };

@@ -61,7 +61,7 @@ form.sign-in-form {
 
 .title {
 transform: translateY(-0px);
-font-family:Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif ;
+font-weight: bold;
 font-style: bold;
 font-size: 3rem;
 color: #5968E9;
@@ -368,28 +368,46 @@ background: none;
   }
 }
 
+
+@media (max-width: 870px) {
+  .history-table {
+    font-size: 14px;
+  }
+
+  .history-table th, .history-table td {
+    padding: 8px; 
+  }
+
+  .history-container {
+    padding: 15px; 
+  }
+
+  
+  .copy-button, .remove-button {
+    font-size: 12px; 
+  }
+}
+
 @media (max-width: 570px) {
-  form {
-    padding: 0 1.5rem;
+  .history-table {
+    font-size: 12px; 
   }
 
-  .image {
-    display: none;
-  }
-  .panel .content {
-    padding: 0.5rem 1rem;
-  }
-  .container {
-    padding: 1.5rem;
+  .history-table th, .history-table td {
+    padding: 6px; 
   }
 
-  .container:before {
-    bottom: 72%;
-    left: 50%;
+  .history-container {
+    padding: 10px; 
   }
 
-  .container.sign-up-mode:before {
-    bottom: 30%;
-    left: 50%;
+
+  .history-table th:nth-child(3), .history-table td:nth-child(3) { 
+    display: none; 
+  }
+
+
+  .copy-button, .remove-button {
+    font-size: 10px; 
   }
 }

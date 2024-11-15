@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrash, faCopy } from '@fortawesome/free-solid-svg-icons';
 import './History.css'; // Import CSS cho bảng
 
 function History() {
@@ -23,31 +25,47 @@ function History() {
     fetchUrls();
   }, []);
 
+
+  const handleCopy = (link) => {
+    navigator.clipboard.writeText(link).then(() => {
+      alert('Link copied to clipboard!');
+    }).catch((err) => {
+      console.error('Could not copy text: ', err);
+    });
+  };
+
   return (
-    <div>
-      <h2>History</h2>
-      <p>This is the History page. View the history of our URL shortening service!</p>
+    <div className="history-container">
+      <h1>Your Shortened URLs</h1>
+      <p>Here you can see all the links you've shortened.</p>
+
       {error && <p className="error">{error}</p>}
-      <table>
+
+      <table className="history-table">
         <thead>
           <tr>
-            <th>Original URL</th>
-            <th>Short URL</th>
+            <th>Shortened Links</th>
+            <th>Original Links</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>
-          {urls.map((url) => (
-            <tr key={url.shortenedUrl}>
+          {urls.map((item) => (
+            <tr key={item.id}>
               <td>
-                <a href={url.originalUrl} target="_blank" rel="noopener noreferrer">
-                  {url.originalUrl}
-                </a>
+                <span>{item.shortenedUrl}</span>
+                <button onClick={() => handleCopy(item.shortenedUrl)} className="copy-button">
+                  <FontAwesomeIcon icon={faCopy} />
+                </button>
               </td>
               <td>
-                <a href={`http://localhost:8000/short/${url.shortenedUrl}`} target="_blank" rel="noopener noreferrer">
-                  {url.shortenedUrl}
-                </a>
+                <span>{item.originalUrl}</span>
+                <button onClick={() => handleCopy(item.originalUrl)} className="copy-button">
+                  <FontAwesomeIcon icon={faCopy} />
+                </button>
               </td>
+              <td>{new Date(item.createdAt).toLocaleDateString()}</td>
+
             </tr>
           ))}
         </tbody>
