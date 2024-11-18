@@ -10,6 +10,6 @@ if (process.env.NODE_ENV !== "prod") {
 console.log("Loaded PORT:", process.env.PORT);
 
 module.exports = {
-    PORT: process.env.PORT || 3001,
+    PORT: process.env.PORT,
     APP_SECRET: process.env.APP_SECRET,
 };
