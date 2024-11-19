@@ -1,7 +1,7 @@
 const express = require('express');
 const ShortLinkService = require('../services/short-link-service');
 const { BadRequestError } = require('../utils/app-errors');
-
+const { sendToQueue } = require('../queue/producer');
 const authMiddleware = require('./middlewares/auth');
 const addUserInfoMiddleware = require('./middlewares/userInfo');
 
@@ -27,8 +27,10 @@ module.exports = (app) => {
         try {
             const { url } = req.body;
             const userId = req.user && req.user.userId ? req.user.userId : null;
-            const { shortUrl } = await lib.createShortUrl(url, userId);
-            res.json({ shortUrl: `${req.protocol}://${req.get('host')}/short/${shortUrl}` });
+
+            await sendToQueue({ url, userId }, res);
+            // const { shortUrl } = await lib.createShortUrl(url, userId);
+            // res.json({ shortUrl: `${req.protocol}://${req.get('host')}/short/${shortUrl}` });
         } catch (err) {
             res.status(500).json({ error: err.message });
         }
