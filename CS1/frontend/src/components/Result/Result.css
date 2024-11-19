@@ -1,0 +1,41 @@
+.result {
+    display: flex;
+    align-items: center; 
+    justify-content: center;
+    gap: 10px; 
+  }
+  
+  .result a {
+    color: white;
+    text-decoration: none; 
+  }
+  
+  .result a:hover {
+    color: #d1d0d0; 
+    text-decoration: underline;
+  }
+  
+  .result button {
+    padding: 8px 16px;
+    height: 3rem;
+    width: 13rem;
+    font-size: 14px;
+    color: #fff;
+    background-color: transparent;
+    border: 2px solid #ff9800; 
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; 
+  }
+  
+  .result button:hover {
+    background-color: transparent;
+    color: #ff9800; 
+  }
+  
+  .result button.copied {
+    cursor:default;
+    background-color: #ff9800; 
+    color: #fff; 
+  }
+  
