@@ -45,4 +45,14 @@ module.exports = (app) => {
             res.status(500).json({ error: err.message });
         }
     });
+
+    app.delete('/delete-urls/:id', authMiddleware, async (req, res) => {
+        try {
+            const { id } = req.params;
+            await lib.deleteUrl(id);
+            res.status(204).end();
+        } catch (err) {
+            res.status(500).json({ error: err.message });
+        }
+    });
 };

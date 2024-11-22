@@ -28,7 +28,7 @@ async function sendToQueue(data, res) {
             console.log('Received result from consumer:', result);
 
             // Trả kết quả lại cho client
-            res.status(200).json({ shortUrl: `http://localhost:3001/short/${result.shortUrl}` });
+            res.status(200).json({ shortUrl: `http://localhost:8000/short/${result.shortUrl}` });
 
             channel.close();
             connection.close();

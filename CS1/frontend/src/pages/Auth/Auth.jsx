@@ -6,6 +6,9 @@ import logImage from '../../assets/log.svg';
 import registerImage from '../../assets/register.svg';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser, faLock, faPhone } from '@fortawesome/free-solid-svg-icons';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 const Auth = () => {
   const location = useLocation();
@@ -33,10 +36,23 @@ const Auth = () => {
       });
 
       const data = response.data;
+      // if (data.status === 'success') {
+      //   // Lưu trữ token trong localStorage
+      //   localStorage.setItem('token', data.data.token);
+      //   localStorage.setItem('username', data.data.user.username);
+      //   console.log('Login successful:', data.data.user);
+      //   window.location.href = '/';
+      // } else {
+      //   console.error('Login failed:', data.message);
+      // }
       if (data.status === 'success') {
-        // Lưu trữ token trong localStorage
-        localStorage.setItem('token', data.data.token);
-        localStorage.setItem('username', data.data.user.username);
+        const cookieOptions = {
+          path: '/',
+          secure: true,
+          sameSite: 'none',
+        };
+        cookies.set('token', data.data.token, cookieOptions);
+        cookies.set('username', data.data.user.username, cookieOptions);
         console.log('Login successful:', data.data.user);
         window.location.href = '/';
       } else {

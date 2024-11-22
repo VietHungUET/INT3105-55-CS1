@@ -76,12 +76,26 @@ class ShortLinkService {
     async getUserUrls(userId) {
         try {
             const urls = await ShortenedURL.findAll({
-                where: { userId },
-                attributes: { exclude: ['id'] }
+                where: { userId }
             });
             return urls;
         } catch (err) {
             throw new APIError('Error retrieving user URLs', err);
+        }
+    }
+
+    async deleteUrl(id) {
+        try {
+            const record = await ShortenedURL.findByPk(id);
+            if (!record) {
+                throw new BadRequestError('URL not found');
+            }
+            await record.destroy();
+            if (redisClient.isReady) {
+                await redisClient.del(record.shortenedUrl);
+            }
+        } catch (err) {
+            throw new APIError('Error deleting URL', err);
         }
     }
 }

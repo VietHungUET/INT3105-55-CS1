@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const { APIError } = require('./app-errors');
 
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
+const REFRESH_SECRET = process.env.REFRESH_SECRET || 'cung-bo-cap';
 const dbDirectory = path.resolve(__dirname, '../../db');
 
 if (!fs.existsSync(dbDirectory)) {
@@ -110,6 +111,7 @@ async function GenerateToken(payload) {
         throw new APIError('Error generating token');
     }
 }
+
 
 async function ValidateToken(token) {
     try {

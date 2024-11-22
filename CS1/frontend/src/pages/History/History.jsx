@@ -3,6 +3,9 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faCopy } from '@fortawesome/free-solid-svg-icons';
 import './History.css'; // Import CSS cho bảng
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 function History() {
   const [urls, setUrls] = useState([]);
@@ -11,13 +14,14 @@ function History() {
   useEffect(() => {
     const fetchUrls = async () => {
       try {
-        const token = localStorage.getItem('token');
+        const token = cookies.get('token');
         const response = await axios.get('http://localhost:8000/my-urls', {
           headers: {
             'Authorization': `Bearer ${token}`
           }
         });
         setUrls(response.data);
+        console.log(response.data);
       } catch (err) {
         setError('Failed to fetch URLs');
       }
@@ -34,6 +38,27 @@ function History() {
     });
   };
 
+  const handleRemove = async (id) => {
+    try {
+      const token = cookies.get('token');
+      const response = await axios.delete(`http://localhost:8000/api/urls/${id}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (response.status !== 204) {
+        throw new Error('Failed to delete URL');
+      }
+
+      // Cập nhật trạng thái sau khi xóa thành công
+      setUrls(urls.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error('Error deleting URL:', error);
+      setError('Failed to delete URL');
+    }
+  };
+
   return (
     <div className="history-container">
       <h1>Your Shortened URLs</h1>
@@ -47,6 +72,7 @@ function History() {
             <th>Shortened Links</th>
             <th>Original Links</th>
             <th>Date</th>
+            <th>Remove</th>
           </tr>
         </thead>
         <tbody>
@@ -65,7 +91,11 @@ function History() {
                 </button>
               </td>
               <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-
+              <td>
+                <button onClick={() => handleRemove(item.id)} className="remove-button">
+                  <FontAwesomeIcon icon={faTrash} />
+                </button>
+              </td>
             </tr>
           ))}
         </tbody>

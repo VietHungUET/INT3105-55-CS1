@@ -78,7 +78,7 @@ class UserService {
             return {
                 status: 'success',
                 data: {
-                    token,
+                    token: token,
                     user: {
                         id: user.id,
                         username: user.username

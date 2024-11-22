@@ -31,8 +31,8 @@ p {
 
 .history-table th,
 .history-table td {
-  padding: 8px;
-  text-align: left;
+  padding: 12px;
+  text-align: center;
   border-bottom: 1px solid #ddd;
 }
 

@@ -4,6 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faLink, faUserCircle } from '@fortawesome/free-solid-svg-icons'; // Import biểu tượng avatar
 import logo from '../../assets/logo.png';
 import './HeaderStyle.css';
+import Cookies from 'universal-cookie';
+
+const cookies = new Cookies();
 
 function Header() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -14,8 +17,10 @@ function Header() {
 
   useEffect(() => {
     // Kiểm tra trạng thái đăng nhập từ localStorage
-    const token = localStorage.getItem('token');
-    const storedUsername = localStorage.getItem('username');
+    // const token = localStorage.getItem('token');
+    // const storedUsername = localStorage.getItem('username');
+    const token = cookies.get('token');
+    const storedUsername = cookies.get('username');
     if (token && storedUsername) {
       setIsLoggedIn(true);
       setUsername(storedUsername);
@@ -25,8 +30,13 @@ function Header() {
   // Function to handle logout
   const handleLogout = () => {
     setIsLoggedIn(false);
-    localStorage.removeItem('token');
-    localStorage.removeItem('username');
+    // localStorage.removeItem('token');
+    // localStorage.removeItem('username');
+    cookies.remove('token', { path: '/' });
+    cookies.remove('username', { path: '/' });
+    console.log('Token after logout:', cookies.get('token')); // Kiểm tra giá trị của token sau khi đăng xuất
+    console.log('Username after logout:', cookies.get('username')); // Kiểm tra giá trị của username sau khi đăng xuất
+
     navigate('/');
   };
 

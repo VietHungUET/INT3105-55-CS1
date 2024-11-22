@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import Cookies from 'universal-cookie';
 import './Home.css';
 import Result from '../../components/Result/Result';
+const cookies = new Cookies();
 
 function Home() {
 
@@ -27,7 +29,7 @@ function Home() {
       return;
     }
     try {
-      const token = localStorage.getItem('token');
+      const token = cookies.get('token');
       const response = await axios.post('http://localhost:8000/create',
         { url },
         {

@@ -32,12 +32,16 @@ const services = [
     {
         route: "/my-urls",
         target: "http://localhost:3001/my-urls",
+    },
+    {
+        route: "/api/urls",
+        target: "http://localhost:3001/delete-urls",
     }
     // Add more services as needed either deployed or locally.
 ];
 
 // Define rate limit constants
-const rateLimit = 20; // Max requests per minute
+const rateLimit = 60; // Max requests per minute
 const interval = 60 * 1000; // Time window in milliseconds (1 minute)
 
 // Object to store request counts for each IP address
