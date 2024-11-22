@@ -28,6 +28,19 @@ p {
   width: 100%;
   border-collapse: collapse;
 }
+.history-table td span {
+  display: inline-block;
+  max-width: 200px; 
+  white-space: nowrap; 
+  overflow: hidden; 
+  text-overflow: ellipsis; 
+  vertical-align: middle;
+}
+
+.history-table td {
+  vertical-align: middle; 
+}
+
 
 .history-table th,
 .history-table td {

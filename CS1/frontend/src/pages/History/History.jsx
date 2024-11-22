@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faCopy } from '@fortawesome/free-solid-svg-icons';
-import './History.css'; // Import CSS cho bảng
+import './History.css'; 
 
 function History() {
   const [urls, setUrls] = useState([]);
@@ -24,7 +24,6 @@ function History() {
     };
     fetchUrls();
   }, []);
-
 
   const handleCopy = (link) => {
     navigator.clipboard.writeText(link).then(() => {
@@ -59,13 +58,12 @@ function History() {
                 </button>
               </td>
               <td>
-                <span>{item.originalUrl}</span>
+                <span title={item.originalUrl}>{item.originalUrl}</span>
                 <button onClick={() => handleCopy(item.originalUrl)} className="copy-button">
                   <FontAwesomeIcon icon={faCopy} />
                 </button>
               </td>
               <td>{new Date(item.createdAt).toLocaleDateString()}</td>
-
             </tr>
           ))}
         </tbody>
