@@ -1,0 +1,35 @@
+config:
+  target: 'http://localhost:3000'  # Địa chỉ của server
+  phases:
+    - duration: 60                 # Giai đoạn 1: Warm up (60 giây)
+      arrivalRate: 5               # 5 yêu cầu mỗi giây
+      rampTo: 10                   # Tăng lên 10 yêu cầu/giây
+      name: Warm up
+    - duration: 120                # Giai đoạn 2: Load test (120 giây)
+      arrivalRate: 10              # Duy trì ở mức 10 yêu cầu mỗi giây
+      rampTo: 20                   # Tăng lên 20 yêu cầu/giây
+      name: Load test
+    - duration: 60                 # Giai đoạn 3: Stress test (60 giây)
+      arrivalRate: 20              # Duy trì ở mức 20 yêu cầu mỗi giây
+      rampTo: 30                   # Tăng lên 30 yêu cầu/giây
+      name: Stress test
+  plugins:
+    ensure: {}                     # Plugin kiểm tra tính toàn vẹn của phản hồi
+    apdex: {}                      # Tính toán chỉ số hài lòng của người dùng
+    metrics-by-endpoint: {}        # Thống kê hiệu suất theo từng endpoint
+  apdex:
+    threshold: 200                 # Chỉ số hài lòng: thời gian phản hồi lý tưởng là 200ms
+  ensure:
+    threshold:
+      - http.response_time.p95: 200  # 95% yêu cầu có thời gian phản hồi dưới 200ms
+      - http.response_time.p99: 300  # 99% yêu cầu có thời gian phản hồi dưới 300ms
+
+scenarios:
+  - flow:                         # Mô phỏng hành vi người dùng
+      - get:                      # Truy cập trang chủ
+          url: '/'
+      - post:                     # Đăng nhập
+          url: '/auth/login'
+          json:                   # Payload gửi kèm yêu cầu POST
+            username: 'tam'
+            password: '123'
