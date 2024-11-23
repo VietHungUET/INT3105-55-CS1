@@ -1,7 +1,7 @@
 const amqp = require('amqplib');
 
 async function sendToQueue(data, res) {
-    const connection = await amqp.connect('amqp://localhost');
+    const connection = await amqp.connect(`amqp://${process.env.RABBITMQ_IP}`);
     const channel = await connection.createChannel();
     const taskQueue = 'task_queue';
     const responseQueue = 'response_queue';  // Hàng đợi phản hồi
@@ -28,7 +28,7 @@ async function sendToQueue(data, res) {
             console.log('Received result from consumer:', result);
 
             // Trả kết quả lại cho client
-            res.status(200).json({ shortUrl: `http://localhost:3001/short/${result.shortUrl}` });
+            res.status(200).json({ shortUrl: `http://${process.env.DOMAIN_APP}/short/${result.shortUrl}` });
 
             channel.close();
             connection.close();

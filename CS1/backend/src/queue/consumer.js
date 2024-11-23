@@ -2,7 +2,7 @@ const amqp = require('amqplib');
 const ShortLinkService = require('../services/short-link-service');
 
 async function startConsumer() {
-    const connection = await amqp.connect('amqp://localhost');
+    const connection = await amqp.connect(`amqp://${process.env.RABBITMQ_IP}`);
     const channel = await connection.createChannel();
     const taskQueue = 'task_queue';
     const responseQueue = 'response_queue';

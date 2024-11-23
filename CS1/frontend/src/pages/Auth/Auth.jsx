@@ -27,7 +27,7 @@ const Auth = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/login', {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/login`, {
         username,
         password
       });
@@ -38,7 +38,7 @@ const Auth = () => {
         localStorage.setItem('token', data.data.token);
         localStorage.setItem('username', data.data.user.username);
         console.log('Login successful:', data.data.user);
-        window.location.href = '/';
+        window.location.href = `${process.env.REACT_APP_FRONTEND_URL ? process.env.REACT_APP_FRONTEND_URL : ''}/`;
       } else {
         console.error('Login failed:', data.message);
       }
@@ -53,7 +53,7 @@ const Auth = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/register', {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/register`, {
         username,
         phone,
         password,

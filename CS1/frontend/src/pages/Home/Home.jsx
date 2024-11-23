@@ -28,7 +28,7 @@ function Home() {
     }
     try {
       const token = localStorage.getItem('token');
-      const response = await axios.post('http://localhost:8000/create',
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/create`,
         { url },
         {
           headers: {

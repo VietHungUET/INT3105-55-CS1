@@ -12,7 +12,7 @@ function History() {
     const fetchUrls = async () => {
       try {
         const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8000/my-urls', {
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/my-urls`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }

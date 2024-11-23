@@ -31,11 +31,11 @@ function Header() {
   };
 
   const handleSignInClick = () => {
-    navigate('/auth', { state: { isSignUpMode: false } });
+    navigate(`${process.env.REACT_APP_FRONTEND_URL ? process.env.REACT_APP_FRONTEND_URL : ''}/auth`, { state: { isSignUpMode: false } });
   };
 
   const handleRegisterClick = () => {
-    navigate('/auth', { state: { isSignUpMode: true } });
+    navigate(`${process.env.REACT_APP_FRONTEND_URL ? process.env.REACT_APP_FRONTEND_URL : ''}/auth`, { state: { isSignUpMode: true } });
   };
 
   const toggleMenu = () => {
@@ -67,17 +67,17 @@ function Header() {
 
       <nav className="nav-links">
         <div className="home-button">
-          <NavLink to="/" className="home-link">
+          <NavLink to={`${process.env.REACT_APP_FRONTEND_URL ? process.env.REACT_APP_FRONTEND_URL : ''}/`} className="home-link">
             <FontAwesomeIcon icon={faHome} />
             <span className="home-text">Home</span>
           </NavLink>
         </div>
 
-        {location.pathname !== '/auth' && (
+        {location.pathname !== `${process.env.REACT_APP_FRONTEND_URL ? process.env.REACT_APP_FRONTEND_URL : ''}/auth` && (
           isLoggedIn ? (
             <>
               <div className="his-button">
-                <NavLink to="/history" className="history-link">
+                <NavLink to={`${process.env.REACT_APP_FRONTEND_URL ? process.env.REACT_APP_FRONTEND_URL : ''}/history`} className="history-link">
                   <FontAwesomeIcon icon={faLink} />
                   <span className="history-text">History</span>
                 </NavLink>

@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const morgan = require("morgan");
 const { createProxyMiddleware } = require("http-proxy-middleware");
 const PORT = 8000;
+require('dotenv').config();
 
 const app = express();
 
@@ -14,24 +15,24 @@ app.disable("x-powered-by");
 
 const services = [
     {
-        route: "/login",
-        target: "http://localhost:3001/login",
+        route: `${process.env.PREFIX_GATEWAY_URL ? process.env.PREFIX_GATEWAY_URL : ''}/login`,
+        target: `http://${process.env.BACKEND_IP}:${process.env.BACKEND_PORT}/login`,
     },
     {
-        route: "/register",
-        target: "http://localhost:3001/register",
+        route: `${process.env.PREFIX_GATEWAY_URL ? process.env.PREFIX_GATEWAY_URL : ''}/register`,
+        target: `http://${process.env.BACKEND_IP}:${process.env.BACKEND_PORT}/register`,
     },
     {
-        route: "/create",
-        target: "http://localhost:3001/create",
+        route: `${process.env.PREFIX_GATEWAY_URL ? process.env.PREFIX_GATEWAY_URL : ''}/create`,
+        target: `http://${process.env.BACKEND_IP}:${process.env.BACKEND_PORT}/create`,
     },
     {
-        route: "/short",
-        target: "http://localhost:3001/short",
+        route: `${process.env.PREFIX_GATEWAY_URL ? process.env.PREFIX_GATEWAY_URL : ''}/short`,
+        target: `http://${process.env.BACKEND_IP}:${process.env.BACKEND_PORT}/short`,
     },
     {
-        route: "/my-urls",
-        target: "http://localhost:3001/my-urls",
+        route: `${process.env.PREFIX_GATEWAY_URL ? process.env.PREFIX_GATEWAY_URL : ''}/my-urls`,
+        target: `http://${process.env.BACKEND_IP}:${process.env.BACKEND_PORT}/my-urls`,
     }
     // Add more services as needed either deployed or locally.
 ];
@@ -96,6 +97,8 @@ services.forEach(({ route, target }) => {
             [`^${route}`]: "",
         },
     };
+
+    console.log(proxyOptions);
 
     // Apply rate limiting and timeout middleware before proxying
     app.use(route, rateLimitAndTimeout, createProxyMiddleware(proxyOptions));

@@ -15,8 +15,11 @@ function App() {
         <main>
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/fe/" element={<Home />} />
             <Route path="/auth" element={<Auth />} />
+            <Route path="/fe/auth" element={<Auth />} />
             <Route path="/history" element={<History />} />
+            <Route path="/fe/history" element={<History />} />
           </Routes>
         </main>
       </div>

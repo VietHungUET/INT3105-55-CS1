@@ -14,7 +14,7 @@ db.sequelize = sequelize;
 
 db.models = {};
 
-db.models.User = require('./User')(sequelize, Sequelize.DataTypes);
+db.models.User = require('./user')(sequelize, Sequelize.DataTypes);
 
 db.models.ShortenedURL = require('./ShortenedURL')(sequelize, Sequelize.DataTypes);
 
