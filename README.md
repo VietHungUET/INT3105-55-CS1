@@ -1,8 +1,8 @@
 # INT3105-55-CS1
 ## Contributors
-- Đào Thị Bình An
-- Vũ Việt Hùng 
-- Bùi Thị Huyền Tâm
+- Đào Thị Bình An - 22028326
+- Vũ Việt Hùng - 22028124
+- Bùi Thị Huyền Tâm - 22028214
 ## Guide
 ```sh
 # Cài đặt các gói liên quan
