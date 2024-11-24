@@ -29,7 +29,8 @@ const StartServer = async () => {
 };
 
 if (cluster.isMaster) {
-  const numWorkers = 5; // Số lượng worker
+  const numCPUs = os.cpus().length; // Số lượng CPU
+  const numWorkers = Math.min(8, numCPUs); // Số lượng worker tối đa
   console.log(`Master process ${process.pid} is running`);
 
   // Khởi chạy worker pool

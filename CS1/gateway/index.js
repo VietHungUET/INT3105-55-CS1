@@ -41,7 +41,7 @@ const services = [
 ];
 
 // Define rate limit constants
-const rateLimit = 60; // Max requests per minute
+const rateLimit = 200; // Max requests per minute
 const interval = 60 * 1000; // Time window in milliseconds (1 minute)
 
 // Object to store request counts for each IP address
@@ -87,10 +87,10 @@ function rateLimitAndTimeout(req, res, next) {
     next(); // Continue to the next middleware
 }
 
-// Apply the rate limit and timeout middleware to the proxy
+// // Apply the rate limit and timeout middleware to the proxy
 app.use(rateLimitAndTimeout);
 
-// Set up proxy middleware for each microservice
+// Set up proxy middleware for each service
 services.forEach(({ route, target }) => {
     // Proxy options
     const proxyOptions = {
@@ -102,7 +102,7 @@ services.forEach(({ route, target }) => {
     };
 
     // Apply rate limiting and timeout middleware before proxying
-    app.use(route, rateLimitAndTimeout, createProxyMiddleware(proxyOptions));
+    app.use(route, createProxyMiddleware(proxyOptions));
 });
 
 app.listen(PORT, () => {
