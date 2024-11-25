@@ -6,9 +6,14 @@
 ## Guide
 ```sh
 # Cài đặt các gói liên quan
+$ cd back end
 $ npm install
-# Tạo folder cho database
-$ mkdir db
+$ cd frontend
+$ npm install
+$ cd gateway
+% npm install
+# Build docker
+$ docker-compose build
 # Khởi chạy ứng dụng
 $ npm start
 ```
@@ -18,4 +23,7 @@ $ npm start
 |--|:--:|--|
 | /short/:id | GET | Trả về đường dẫn gốc
 | /create?url= | POST | Trả về ID được thu gọn
-
+| /register | POST | Đăng ký thông tin người dùng
+| /login | POST | Đăng nhập
+| /my-urls | GET | Xem danh sách các url đã short của người dùng
+| /delete-urls/:id | DELETE | Xóa url mà người dùng muốn xóa 
